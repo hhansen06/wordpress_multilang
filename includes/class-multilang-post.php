@@ -48,7 +48,9 @@ class Multilang_Post
 
         // Frontend filtering
         add_filter('the_title', array($this, 'filter_title'), 10, 2);
-        add_filter('the_content', array($this, 'filter_content'), 10);
+        // Run before core do_blocks/wpautop filters so block markup from
+        // translated content is parsed and rendered correctly.
+        add_filter('the_content', array($this, 'filter_content'), 1);
         add_filter('the_excerpt', array($this, 'filter_excerpt'), 10);
         // Also filter wp_title (older themes)
         add_filter('wp_title', array($this, 'filter_wp_title'), 10, 3);

@@ -88,8 +88,32 @@
     border-right: 1px solid #e0e0e0;
 }
 
-.multilang-mini-editor-canvas .block-editor-block-list__layout {
+.multilang-mini-editor-canvas .block-editor-writing-flow > .block-editor-block-list__layout {
     min-height: 180px;
+}
+
+/* Prevent theme/editor styles from adding huge spacing between list items
+   inside the embedded language editors. */
+.multilang-mini-editor-canvas .editor-styles-wrapper ul,
+.multilang-mini-editor-canvas .editor-styles-wrapper ol,
+.multilang-mini-editor-canvas .block-editor-block-list__layout ul,
+.multilang-mini-editor-canvas .block-editor-block-list__layout ol {
+    margin: 0 0 1em 1.5em;
+    padding: 0;
+}
+
+.multilang-mini-editor-canvas .editor-styles-wrapper li,
+.multilang-mini-editor-canvas .block-editor-block-list__layout li,
+.multilang-mini-editor-canvas .editor-styles-wrapper .wp-block-list li,
+.multilang-mini-editor-canvas .block-editor-block-list__layout .wp-block-list li {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+.multilang-mini-editor-canvas .editor-styles-wrapper li + li,
+.multilang-mini-editor-canvas .block-editor-block-list__layout li + li {
+    margin-top: 0.25em;
 }
 
 .multilang-mini-editor-inspector {
