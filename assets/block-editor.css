@@ -1,0 +1,117 @@
+/* ── Multilang Block Editor Styles ──────────────────────────────────────── */
+
+.multilang-block-panel .multilang-notice {
+    margin: 0 0 12px;
+    font-size: 12px;
+}
+
+.multilang-block-panel .multilang-status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 0 12px;
+}
+
+.multilang-block-panel .multilang-status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.multilang-block-panel .multilang-status-badge {
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.multilang-block-panel .multilang-status-badge.is-complete {
+    background: #d9f2df;
+    color: #0a5a23;
+}
+
+.multilang-block-panel .multilang-status-badge.is-partial {
+    background: #fff0cc;
+    color: #7a5200;
+}
+
+.multilang-block-panel .multilang-status-badge.is-empty {
+    background: #f0f0f0;
+    color: #444;
+}
+
+.multilang-block-panel .multilang-content-hint {
+    margin: 8px 0 12px;
+    padding: 8px 10px;
+    background: #f6f7f7;
+    border-left: 3px solid #2271b1;
+    font-size: 12px;
+}
+
+.multilang-block-panel .components-tab-panel__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.multilang-block-panel .components-tab-panel__tabs-item {
+    font-size: 13px;
+}
+
+.multilang-block-panel textarea {
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.multilang-metabox-block-editor {
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    background: #fff;
+    min-height: 220px;
+}
+
+.multilang-mini-editor-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 10px;
+    min-height: 220px;
+}
+
+.multilang-mini-editor-canvas {
+    min-height: 220px;
+    padding: 10px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.multilang-mini-editor-canvas .block-editor-block-list__layout {
+    min-height: 180px;
+}
+
+.multilang-mini-editor-inspector {
+    min-height: 220px;
+    padding: 8px;
+    background: #fcfcfc;
+    overflow: auto;
+}
+
+.multilang-mini-editor-inspector-empty {
+    margin: 8px;
+    color: #666;
+    font-size: 12px;
+}
+
+@media (max-width: 1100px) {
+    .multilang-mini-editor-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .multilang-mini-editor-canvas {
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+}

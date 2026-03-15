@@ -1,0 +1,33 @@
+/* ── Multilang Admin Styles ─────────────────────────────────────────────── */
+
+.multilang-admin .multilang-table td {
+    vertical-align: middle;
+}
+
+.multilang-admin .multilang-flag-input {
+    width: 60px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.multilang-admin .multilang-handle {
+    color: #aaa;
+    vertical-align: middle;
+}
+
+.multilang-admin .multilang-handle:hover {
+    color: #555;
+}
+
+.multilang-admin #multilang-sortable tbody tr {
+    cursor: default;
+}
+
+.multilang-admin #multilang-sortable tbody .ui-sortable-helper {
+    background: #fffbe6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+}
+
+.multilang-admin .multilang-add-form {
+    max-width: 600px;
+}

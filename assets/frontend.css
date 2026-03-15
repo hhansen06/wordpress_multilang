@@ -1,0 +1,59 @@
+/* ── Multilang Frontend Styles ──────────────────────────────────────────── */
+
+/* Language switcher items injected into top bar nav */
+.multilang-switcher-item {
+    display: inline-block;
+}
+
+.multilang-switcher-item a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: opacity .2s;
+    font-size: 1.25em;
+    line-height: 1;
+}
+
+.multilang-switcher-item a:hover {
+    opacity: .7;
+}
+
+.multilang-switcher-item.current-language-item a {
+    box-shadow: 0 2px 0 currentColor;
+}
+
+.multilang-list a {
+    font-size: .875em;
+    text-decoration: none;
+}
+
+.multilang-list .multilang-active {
+    font-weight: 700;
+}
+
+/* Dropdown switcher */
+.multilang-dropdown select {
+    font-size: .875em;
+    padding: 2px 6px;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Screen-reader utility (flags show, labels hidden visually) */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}
