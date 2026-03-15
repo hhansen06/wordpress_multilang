@@ -54,6 +54,12 @@ class Multilang_Post
         add_filter('the_excerpt', array($this, 'filter_excerpt'), 10);
         // Also filter wp_title (older themes)
         add_filter('wp_title', array($this, 'filter_wp_title'), 10, 3);
+
+        // Search integration: include translated meta fields in frontend search.
+        add_action('pre_get_posts', array($this, 'prepare_search_query'));
+        add_filter('posts_join', array($this, 'search_posts_join'), 10, 2);
+        add_filter('posts_search', array($this, 'search_posts_search'), 10, 2);
+        add_filter('posts_distinct', array($this, 'search_posts_distinct'), 10, 2);
     }
 
     // ── Meta registration (REST / Block Editor) ───────────────────────────────
@@ -390,5 +396,119 @@ class Multilang_Post
         $lang = multilang_current();
         $meta = get_post_meta($post->ID, self::META_TITLE . $lang, true);
         return ($meta !== '' && $meta !== false) ? esc_html($meta) : $title;
+    }
+
+    // ── Search integration ───────────────────────────────────────────────────
+
+    /**
+     * Marks frontend main search queries so translated meta can be included.
+     */
+    public function prepare_search_query($query)
+    {
+        if (is_admin() || !$query instanceof WP_Query || !$query->is_main_query() || !$query->is_search()) {
+            return;
+        }
+
+        $search_term = trim((string) $query->get('s'));
+        if ($search_term === '') {
+            return;
+        }
+
+        $current_lang = multilang_current();
+        $default = Multilang_Languages::get_instance()->get_default();
+        $default_lang = $default && !empty($default['code']) ? sanitize_key($default['code']) : $current_lang;
+
+        $query->set('multilang_search_enabled', 1);
+        $query->set('multilang_search_lang', sanitize_key($current_lang));
+        $query->set('multilang_search_default_lang', $default_lang);
+    }
+
+    /**
+     * Joins translated post meta keys into the search query.
+     */
+    public function search_posts_join($join, $query)
+    {
+        if (!$query instanceof WP_Query || !$query->get('multilang_search_enabled')) {
+            return $join;
+        }
+
+        global $wpdb;
+
+        $lang = sanitize_key((string) $query->get('multilang_search_lang'));
+        $default_lang = sanitize_key((string) $query->get('multilang_search_default_lang'));
+
+        $meta_keys = array(
+            self::META_TITLE . $lang,
+            self::META_CONTENT . $lang,
+            self::META_EXCERPT . $lang,
+        );
+
+        if ($default_lang && $default_lang !== $lang) {
+            $meta_keys[] = self::META_TITLE . $default_lang;
+            $meta_keys[] = self::META_CONTENT . $default_lang;
+            $meta_keys[] = self::META_EXCERPT . $default_lang;
+        }
+
+        $meta_keys = array_values(array_unique($meta_keys));
+        if (empty($meta_keys)) {
+            return $join;
+        }
+
+        $placeholders = implode(', ', array_fill(0, count($meta_keys), '%s'));
+        $sql = $wpdb->prepare(
+            " LEFT JOIN {$wpdb->postmeta} AS multilang_searchmeta ON ({$wpdb->posts}.ID = multilang_searchmeta.post_id AND multilang_searchmeta.meta_key IN ({$placeholders}))",
+            ...$meta_keys
+        );
+
+        if (strpos($join, 'multilang_searchmeta') === false) {
+            $join .= $sql;
+        }
+
+        return $join;
+    }
+
+    /**
+     * Replaces the default search condition with one that also searches
+     * translated title/content/excerpt meta values.
+     */
+    public function search_posts_search($search, $query)
+    {
+        if (!$query instanceof WP_Query || !$query->get('multilang_search_enabled')) {
+            return $search;
+        }
+
+        global $wpdb;
+
+        $search_term = trim((string) $query->get('s'));
+        if ($search_term === '') {
+            return $search;
+        }
+
+        $like = '%' . $wpdb->esc_like($search_term) . '%';
+        $clause = $wpdb->prepare(
+            " AND (({$wpdb->posts}.post_title LIKE %s) OR ({$wpdb->posts}.post_excerpt LIKE %s) OR ({$wpdb->posts}.post_content LIKE %s) OR (multilang_searchmeta.meta_value LIKE %s))",
+            $like,
+            $like,
+            $like,
+            $like
+        );
+
+        if (!is_user_logged_in()) {
+            $clause .= " AND ({$wpdb->posts}.post_password = '')";
+        }
+
+        return $clause;
+    }
+
+    /**
+     * Avoid duplicate posts from postmeta joins in search result queries.
+     */
+    public function search_posts_distinct($distinct, $query)
+    {
+        if (!$query instanceof WP_Query || !$query->get('multilang_search_enabled')) {
+            return $distinct;
+        }
+
+        return 'DISTINCT';
     }
 }

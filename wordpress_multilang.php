@@ -3,7 +3,7 @@
  * Plugin Name: Multilang Support
  * Plugin URI:  https://github.com/local/wordpress_multilang
  * Description: Mehrsprachigkeit für WordPress: Automatische Spracherkennung, konfigurierbare Sprachen, Flaggen-Switcher im Menü, übersetzte Menüeinträge und Seiten/Beiträge ohne externe Dienste.
- * Version:     1.0.6
+ * Version:     1.0.7
  * Author:      Custom Plugin
  * Text Domain: multilang
  * Domain Path: /languages
@@ -11,7 +11,7 @@
 
 defined('ABSPATH') || exit;
 
-define('MULTILANG_VERSION', '1.0.6');
+define('MULTILANG_VERSION', '1.0.7');
 define('MULTILANG_DIR', plugin_dir_path(__FILE__));
 define('MULTILANG_URL', plugin_dir_url(__FILE__));
 define('MULTILANG_OPTION', 'multilang_languages');
